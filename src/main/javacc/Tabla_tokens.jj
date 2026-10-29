@@ -5,54 +5,91 @@ TOKEN :
 	/*
 		Va de mayor prioriad a menor prioridad la escritura de los tokens
 	*/
+
+	//Asignadores
 	  < AT: "@" >
       | < SELECTOR: "->" >
       | < TYPE_ASSIGN: ":" >
-      | < SEPARATOR: ";" >
       | < VALUE_ASSIGN: "=" >
+
+      //Separadores
+      | < SEPARATOR: ";" >
+      | < COMMA: "," >
+
+      //Limitadores
       | < OPEN: "{" >
       | < CLOSE: "}" >
       | < PARAM_OPEN: "(" >
       | < PARAM_CLOSE: ")" >
-      | < COMMA: "," >
+
+      //Condicionales
       | < IF: "if" >
       | < ELSE: "else" >
-      | < FOR: "for" >
       | < SWITCH: "switch" >
+      | < CASE: "case" >
+      | < DEFAULT_CASE: "default" >
+
+      //Ciclantes
+      | < FOR: "for" >
       | < WHILE: "while" >
       | < DO: "do" >
-      | < VARIABLE: "var" >
-      | < FUNCTION: "func" >
-      | < CONSTANT: "const" >
+
+      //Tipos de datos
       | < INTEGER: "int" >
       | < FLOAT: "float" >
       | < BOOLEAN: "boolean" >
       | < CHARACTER: "char" >
       | < STRING: "string" >
       | < BOOLEAN_VALUE: "true" | "false" >
+
+      //Variable
+      | < VARIABLE: "var" >
+
+      //Funciones
+      | < FUNCTION: "func" >
+
+      //Constantes
+      | < CONSTANT: "const" >
+
+      //Valores
       | < NUMERIC: (["0"-"9"])+ ("." (["0"-"9"])+)? > // (["0"-"9"])+ "." (["0"-"9"])*
       | < LITERAL: "\"" ( ~["\"", "\\", "\n", "\r"] | "\\" ~[] )* "\"" > //y lo q vaya en medio "\"
+
+      //Compuertas Logicas
       | < AND: "&" >
       | < OR: "|" >
       | < NOT: "!" >
+
+      //Comparativas
       | < LT: "<" >
       | < GT: ">" >
       | < LE: "<=" >
       | < GE: ">=" >
       | < EQ: "==" >
-      | < CASE: "case" >
-      | < DEFAULT_CASE: "default" >
+
+     //Libreria
       | < TOOLS: "tools" >
+
+      //Imprimir pantalla
       | < PRINTF: "printf" >
+      | < PUTS: "puts">
+
+      //Operaciones
       | < ADD: "add" >
       | < SUBS: "subs" >
       | < MULT: "mult" >
       | < DIV: "div" >
+
+      //Signos de operacion
       | < PLUS: "+" >
       | < MINUS: "-" >
       | < STAR: "*" >
       | < SLASH: "/" >
+
+      //Identificadores
       | < ID: (["a"-"z", "A"-"Z", "_"]) (["a"-"z", "A"-"Z", "0"-"9", "_"])* >
+
+      //Modo panico
       | < UNKNOWN: ~[] >
 }
 
@@ -60,10 +97,20 @@ TOKEN :
 SKIP :
     //todo lo que coincida aqui se descarta y no genera token
 {
-	  " "      // espacio
-	| "\t"     // tabulador
-	| "\n"     // salto de linea
-	| "\r"     // retorno de carro (incluidos en windows)
-	| "\f"     // salto de pagina
+    //Espacio
+	  " "
+	//Tabulador
+	| "\t"
+
+	//Salto de linea
+	| "\n"
+
+	//Retorno de carro (incluidos en windows)
+	| "\r"
+
+	//Salto de pagina
+	| "\f"
+
+	//Comentario
 	| < "//" (~["\n", "\r"])* >
 }
