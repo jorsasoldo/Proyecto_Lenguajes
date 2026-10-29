@@ -1,0 +1,183 @@
+options
+{
+    STATIC = false;
+}
+
+PARSER_BEGIN(Parser)
+
+public class Parser
+{
+    public static void main(String[] args) throws ParseException
+    {
+        //Introducir datos desde el teclado
+        Parser parser = new Parser(System.in);
+
+    }
+}
+PARSER_END(Parser)
+
+
+SKIP :
+    //todo lo que coincida aqui se descarta y no genera token
+{
+    //Espacio
+	  " "
+	//Tabulador
+	| "\t"
+
+	//Salto de linea
+	| "\n"
+
+	//Retorno de carro (incluidos en windows)
+	| "\r"
+
+	//Salto de pagina
+	| "\f"
+
+	//Comentario
+	| < "//" (~["\n", "\r"])* >
+}
+
+//Tiene que estar el analizador en modo pánico
+TOKEN :
+{
+	//Asignadores
+	  < AT: "@" >
+      | < SELECTOR: "->" >
+      | < TYPE_ASSIGN: ":" >
+      | < VALUE_ASSIGN: "=" >
+}
+
+TOKEN :
+{
+      //Separadores
+      < SEPARATOR: ";" >
+      | < COMMA: "," >
+}
+
+TOKEN :
+{
+      //Limitadores
+      < OPEN: "{" >
+      | < CLOSE: "}" >
+      | < PARAM_OPEN: "(" >
+      | < PARAM_CLOSE: ")" >
+}
+
+TOKEN :
+{
+      //Condicionales
+      < IF: "if" >
+      | < ELSE: "else" >
+      | < SWITCH: "switch" >
+      | < CASE: "case" >
+      | < DEFAULT_CASE: "default" >
+}
+
+TOKEN :
+{
+      //Ciclantes
+      < FOR: "for" >
+      | < WHILE: "while" >
+      | < DO: "do" >
+}
+
+TOKEN :
+{
+      //Tipos de datos
+      < INTEGER: "int" >
+      | < FLOAT: "float" >
+      | < BOOLEAN: "boolean" >
+      | < CHARACTER: "char" >
+      | < STRING: "string" >
+      | < BOOLEAN_VALUE: "true" | "false" >
+}
+
+TOKEN :
+{
+      //Variable
+      < VARIABLE: "var" >
+}
+
+TOKEN :
+{
+      //Funciones
+      < FUNCTION: "func" >
+}
+
+TOKEN :
+{
+      //Constantes
+      < CONSTANT: "const" >
+}
+
+TOKEN :
+{
+      //Valores
+      < NUMERIC: (["0"-"9"])+ ("." (["0"-"9"])+)? > // (["0"-"9"])+ "." (["0"-"9"])*
+      | < LITERAL: "\"" ( ~["\"", "\\", "\n", "\r"] | "\\" ~[] )* "\"" > //y lo q vaya en medio "\"
+}
+
+TOKEN :
+{
+      //Compuertas Logicas
+      < AND: "&" >
+      | < OR: "|" >
+      | < NOT: "!" >
+}
+
+TOKEN :
+{
+      //Comparativas
+      < LT: "<" >
+      | < GT: ">" >
+      | < LE: "<=" >
+      | < GE: ">=" >
+      | < EQ: "==" >
+}
+
+TOKEN :
+{
+     //Libreria
+      < TOOLS: "tools" >
+}
+
+TOKEN :
+{
+      //Imprimir pantalla
+      < PRINTF: "printf" >
+      | < PUTS: "puts">
+}
+
+TOKEN :
+{
+      //Operaciones
+      < ADD: "add" >
+      | < SUBS: "subs" >
+      | < MULT: "mult" >
+      | < DIV: "div" >
+}
+
+TOKEN :
+{
+      //Signos de operacion
+      < PLUS: "+" >
+      | < MINUS: "-" >
+      | < STAR: "*" >
+      | < SLASH: "/" >
+}
+
+TOKEN :
+{
+      //Identificadores
+      < ID: (["a"-"z", "A"-"Z", "_"]) (["a"-"z", "A"-"Z", "0"-"9", "_"])* >
+}
+
+TOKEN :
+{
+      //Modo panico
+      < UNKNOWN: ~[] >
+}
+
+//NOTA CLASE PARA TABLA SIMBOLOS Y OTRA PARA CLASE ERRORES
+//UNA CLASE TIPO SIMBOLO PARA GENERALIZAR
