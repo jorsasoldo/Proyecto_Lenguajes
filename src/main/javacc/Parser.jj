@@ -35,11 +35,11 @@ public class Parser
 
             while((t = parser.getNextToken()).kind != ParserConstants.EOF)
             {
-                System.out.printf("%-15s %-18s L%d C%d%n", nombreToken(t.kind), t.image, t.beginLine, t.beginColumn);
+                System.out.printf("%-15s %-18s L%d C%d%n", nombre_token(t.kind), t.image, t.beginLine, t.beginColumn);
             }
         }
-}}
 }
+
 PARSER_END(Parser)
 
 
