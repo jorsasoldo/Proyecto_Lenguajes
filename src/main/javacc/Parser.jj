@@ -26,18 +26,27 @@ public class Parser
         }
 
         public static void main(String[] args) throws Exception
-        {
-            Parser parser = new Parser(new java.io.FileReader(args[0]));
-
-            Token t;
-
-            System.out.printf("%-15s %-18s %s%n", "TOKEN", "LEXEMA", "POSICION");
-
-            while((t = parser.getNextToken()).kind != ParserConstants.EOF)
             {
-                System.out.printf("%-15s %-18s L%d C%d%n", nombre_token(t.kind), t.image, t.beginLine, t.beginColumn);
+                Parser parser = new Parser(new java.io.FileReader(args[0]));
+
+                Tabla_errores errores = new Tabla_errores();
+
+                Token t;
+
+                System.out.printf("%-15s %-18s %s%n", "TOKEN", "LEXEMA", "POSICION");
+
+                while((t = parser.getNextToken()).kind != ParserConstants.EOF)
+                {
+                    //Un token de error se registra y no continua al parser
+                     if(errores.procesar(t))
+                         continue;
+
+                    System.out.printf("%-15s %-18s L%d C%d%n",nombre_token(t.kind), t.image, t.beginLine, t.beginColumn);
+                }
+
+                errores.imprimir();
             }
-        }
+
 }
 
 PARSER_END(Parser)
@@ -62,6 +71,9 @@ SKIP :
 
 	//Comentario
 	| < "//" (~["\n", "\r"])* >
+
+	//Comentario de bloque: /* ... */ (puede ocupar varias lineas)
+    | < "/*" ( ~["*"] | ("*")+ ~["*", "/"] )* ("*")+ "/" >
 }
 
 //Tiene que estar el analizador en modo pánico
@@ -185,6 +197,34 @@ TOKEN :
       //Identificadores
       < ID: (["a"-"z", "A"-"Z", "_"]) (["a"-"z", "A"-"Z", "0"-"9", "_"])* >
 }
+
+TOKEN :
+{
+      //Errores lexicos
+
+      //LEX-01: Caracter no reconocido (se va al modo panico)
+
+      //LEX-02: cadena sin cerrar (termina al llegar al salto de linea)
+      < ERR_STRING_UNCLOSED: "\"" ( ~["\"", "\\", "\n", "\r"] | "\\" ~["\n", "\r"] )* >
+
+      //LEX-03: numero mal formado: "3." (sin decimales) o "3.4.5" (dos puntos)
+      | < ERR_NUMBER: (["0"-"9"])+ "."| "." (["0"-"9"])+| (["0"-"9"])+ "." (["0"-"9"])+ ( "." (["0"-"9"])* )+ >
+
+      //LEX-04: identificador que empieza con digito: 7abcd
+      | < ERR_ID: (["0"-"9"])+ ( "." (["0"-"9"])+ )? ["a"-"z", "A"-"Z", "_"] (["a"-"z", "A"-"Z", "0"-"9", "_"])* >
+
+      //LEX-05: char vacio: '' o con mas de un caracter: 'ab'
+      | < ERR_CHAR_LENGTH: "'" "'"| "'" ( ~["'", "\\", "\n", "\r"] | "\\" ~[] )( ~["'", "\\", "\n", "\r"] | "\\" ~[] )+ "'" >
+
+      //LEX-06: char sin cerrar: 'a
+      | < ERR_CHAR_UNCLOSED: "'" (~["'", "\n", "\r"])* >
+
+      //LEX-07: el rango del int (maximo 2147483647) se valida en Tabla_errores.procesar() porque un patron no puede comparar valores numericos
+
+      //LEX-08: comentario de bloque sin cerrar (llega hasta el final del archivo)
+      | < ERR_COMMENT_UNCLOSED: "/*" ( ~["*"] | ("*")+ ~["*", "/"] )* ("*")* >
+}
+
 
 TOKEN :
 {

@@ -1,0 +1,14 @@
+@var: int a = _x + 1;
+@var: int b = 2147483647;
+@var: int c = 2147483648;
+@var: int d = 99999999999999999999;
+@var: int e = 007;
+/* comentario
+   de varias lineas */
+@var: int f = 1; /* otro ** con asteriscos **/ @var: int g = 2;
+/**/
+@var: string s = "/* esto es string */";
+// linea /* no abre bloque
+@var: int h = 5 / 2;
+/* este nunca se cierra
+@var: int z = 1;

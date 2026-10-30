@@ -1,0 +1,11 @@
+@var: int a = 9abc;
+@var: float f = 3.;
+@var: float g = 3.4.5;
+@var: float ok = 3.14;
+@var: char c = 'ab';
+@var: char d = '';
+@var: char e = 'z';
+@var: char h = 'q
+@var: string s = "sin cerrar
+@var: string t = "bien";
+x = #;
