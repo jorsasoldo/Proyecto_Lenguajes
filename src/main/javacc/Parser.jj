@@ -25,28 +25,35 @@ public class Parser
             return "?";
         }
 
-        public static void main(String[] args) throws Exception
-            {
-                Parser parser = new Parser(new java.io.FileReader(args[0]));
+          public static void main(String[] args) throws Exception
+          {
+              Parser parser = new Parser(new java.io.FileReader(args[0]));
 
-                Tabla_errores errores = new Tabla_errores();
+              Tabla_errores errores = new Tabla_errores();
+              Tabla_simbolos simbolos = new Tabla_simbolos();
 
-                Token t;
+              Token t;
 
-                System.out.printf("%-15s %-18s %s%n", "TOKEN", "LEXEMA", "POSICION");
+              System.out.printf("%-15s %-18s %s%n", "TOKEN", "LEXEMA", "POSICION");
 
-                while((t = parser.getNextToken()).kind != ParserConstants.EOF)
-                {
-                    //Un token de error se registra y no continua al parser
-                     if(errores.procesar(t))
-                         continue;
+              while((t = parser.getNextToken()).kind != ParserConstants.EOF)
+              {
+                  //Un token de error se registra y no continua al parser (incluye tambien enteros fuera de rango)
+                  if(errores.procesar(t))
+                      continue;
 
-                    System.out.printf("%-15s %-18s L%d C%d%n",nombre_token(t.kind), t.image, t.beginLine, t.beginColumn);
-                }
+                  //Un identificador valido se registra en la tabla de simbolos
+                  if(t.kind == ParserConstants.ID)
+                      simbolos.registrar(t);
 
-                errores.imprimir();
-            }
+                  System.out.printf("%-15s %-18s L%d C%d%n",nombre_token(t.kind), t.image, t.beginLine, t.beginColumn);
 
+              }
+
+              simbolos.imprimir();
+              errores.imprimir();
+
+          }
 }
 
 PARSER_END(Parser)

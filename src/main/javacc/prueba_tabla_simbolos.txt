@@ -1,0 +1,11 @@
+@var: int contador = 0;
+@var: int total = contador + 1;      // contador y total en comentario
+@const: float pi = 3.14;
+@func: int sumar(a, b) {
+    @var: int resultado = a + b;
+    @tools->puts("contador total");
+}
+contador = contador + total;
+Contador = 9abc;
+@var: int _x = 99999999999;
+x = sumar(contador, _x);
