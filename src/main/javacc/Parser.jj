@@ -90,32 +90,24 @@ TOKEN :
       | < BOOLEAN: "boolean" >
       | < CHARACTER: "char" >
       | < STRING: "string" >
-      | < BOOLEAN_VALUE: "true" | "false" >
 }
 
 TOKEN :
 {
-      //Variable
+      //Declaradores
       < VARIABLE: "var" >
+      | < FUNCTION: "func" >
+      | < CONSTANT: "const" >
 }
 
 TOKEN :
 {
-      //Funciones
-      < FUNCTION: "func" >
-}
-
-TOKEN :
-{
-      //Constantes
-      < CONSTANT: "const" >
-}
-
-TOKEN :
-{
-      //Valores
-      < NUMERIC: (["0"-"9"])+ ("." (["0"-"9"])+)? > // (["0"-"9"])+ "." (["0"-"9"])*
-      | < LITERAL: "\"" ( ~["\"", "\\", "\n", "\r"] | "\\" ~[] )* "\"" > //y lo q vaya en medio "\"
+      //Valores literales
+       < INT_LITERAL: (["0"-"9"])+ >
+       | < FLOAT_LITERAL: (["0"-"9"])+ "." (["0"-"9"])+ >
+       | < CHAR_LITERAL: "'" ( ~["'", "\\", "\n", "\r"] | "\\" ~[] ) "'" >
+       | < STRING_LITERAL: "\"" ( ~["\"", "\\", "\n", "\r"] | "\\" ~[] )* "\"" >
+       | < BOOLEAN_VALUE: "true" | "false" >
 }
 
 TOKEN :
@@ -134,28 +126,23 @@ TOKEN :
       | < LE: "<=" >
       | < GE: ">=" >
       | < EQ: "==" >
+      | < NE: "!=" >
 }
 
 TOKEN :
 {
-     //Libreria
+     //Libreria tools
       < TOOLS: "tools" >
-}
 
-TOKEN :
-{
-      //Imprimir pantalla
-      < PRINTF: "printf" >
-      | < PUTS: "puts">
-}
+     //Funciones de operaciones
+     | < ADD: "add" >
+     | < SUBS: "subs" >
+     | < MULT: "mult" >
+     | < DIV: "div" >
 
-TOKEN :
-{
-      //Operaciones
-      < ADD: "add" >
-      | < SUBS: "subs" >
-      | < MULT: "mult" >
-      | < DIV: "div" >
+     //Funciones de imprimir pantalla
+     | < PRINTF: "printf" >
+     | < PUTS: "puts">
 }
 
 TOKEN :
