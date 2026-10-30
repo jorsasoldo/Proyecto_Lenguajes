@@ -1,0 +1,6 @@
+@var: int x = -6;
+@var: float pi = 3.14;
+@var: char c = 'a';
+@var: string s = "Hola {x}";
+@tools->add: int r = x + 5;
+@if(x >= 3 & x != 9) { @tools->puts("ok") } //comentario

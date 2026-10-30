@@ -1,3 +1,12 @@
+/*
+    Para correr por primera vez:
+
+    javacc Parser.jj
+    javac *.java
+    java Parser prueba1.txt
+    java Parser prueba2.txt
+ */
+
 options
 {
     STATIC = false;
@@ -7,12 +16,29 @@ PARSER_BEGIN(Parser)
 
 public class Parser
 {
-    public static void main(String[] args) throws ParseException
-    {
-        //Introducir datos desde el teclado
-        Parser parser = new Parser(System.in);
+        static String nombre_token(int tipo) throws Exception
+        {
+            for(java.lang.reflect.Field f : ParserConstants.class.getFields())
+                if(f.getType() == int.class && f.getInt(null) == tipo)
+                    return f.getName();
 
-    }
+            return "?";
+        }
+
+        public static void main(String[] args) throws Exception
+        {
+            Parser parser = new Parser(new java.io.FileReader(args[0]));
+
+            Token t;
+
+            System.out.printf("%-15s %-18s %s%n", "TOKEN", "LEXEMA", "POSICION");
+
+            while((t = parser.getNextToken()).kind != ParserConstants.EOF)
+            {
+                System.out.printf("%-15s %-18s L%d C%d%n", nombreToken(t.kind), t.image, t.beginLine, t.beginColumn);
+            }
+        }
+}}
 }
 PARSER_END(Parser)
 
